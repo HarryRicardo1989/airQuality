@@ -14,7 +14,8 @@ if __name__ == '__main__':
     while(1):
         display.display_line_0("Temperature = %3.1f C" % hdc1080.read_temp())
         display.display_line_1("Humidity = %3.1f %%" % hdc1080.read_humid())
-        display.display_line_2(f'CO2: {ccs.read_co2()} ppm ')
-        display.display_line_3(f'TVOC: {ccs.read_tvoc()} ppm')
+        co2, tvoc = ccs.read_ccs()
+        display.display_line_2(f'CO2: {co2} ppm ')
+        display.display_line_3(f'TVOC: {tvoc} ppm')
 
         sleep(0.1)
