@@ -1,0 +1,9 @@
+[Unit]
+Description=site
+
+[Service]
+Type=simple
+ExecStart=/etc/init.d/airQuality start
+
+[Install]
+WantedBy=multi-user.target
