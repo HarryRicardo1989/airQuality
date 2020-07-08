@@ -5,10 +5,11 @@ from insertDb import InsertDB
 from carrega_display import CarregaDisplay
 from read_ccs import ReadCcs
 from read_hdc1080 import ReadHdc1080
+
 display = CarregaDisplay(i2c_bus=1, address=0x27, numLinhas=4)
 insertdb = InsertDB()
 ultima_atualizacao = 0,
-last_update = constr_ccs = time()
+last_update = time()
 ccs = None
 
 
@@ -36,13 +37,8 @@ def verifica_horario():
 
 
 def constr():
-    global constr_ccs
-    # if not should_update(constr_ccs, 240):
-    #    return
     global ccs
-    print("restart")
     ccs = ReadCcs()
-    constr_ccs = time()
 
 
 if __name__ == '__main__':
@@ -50,7 +46,6 @@ if __name__ == '__main__':
     co2 = tvoc = 0
     hdc1080 = ReadHdc1080(offsetTemp=-3.5)
     while(1):
-        # constr()
         temperatura = hdc1080.read_temp()
         umidade = hdc1080.read_humid()
         display.display_line_0("Temperature = %3.2fC" % temperatura)
