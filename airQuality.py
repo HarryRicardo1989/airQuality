@@ -19,7 +19,7 @@ def should_update(last_update, rate):
 
 def salva_banco(TEMPERATURA, UMIDADE, CO2, TVOC):
     global last_update
-    if not should_update(last_update, 120):
+    if not should_update(last_update, 60):
         return
     DATA = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     insertdb.InsertDB(DATA, TEMPERATURA, UMIDADE, CO2, TVOC)
@@ -30,8 +30,7 @@ def salva_banco(TEMPERATURA, UMIDADE, CO2, TVOC):
 if __name__ == '__main__':
 
     ccs = ReadCcs()
-    hdc1080 = ReadHdc1080()
-
+    hdc1080 = ReadHdc1080(offsetTemp=-3.5)
     while(1):
         temperatura = hdc1080.read_temp()
         umidade = hdc1080.read_humid()
