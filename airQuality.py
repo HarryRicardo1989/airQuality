@@ -35,7 +35,7 @@ def verifica_horario():
 
 
 if __name__ == '__main__':
-
+    co2 = tvoc = 0
     ccs = ReadCcs()
     hdc1080 = ReadHdc1080(offsetTemp=-3.5)
     while(1):
@@ -43,7 +43,10 @@ if __name__ == '__main__':
         umidade = hdc1080.read_humid()
         display.display_line_0("Temperature = %3.2fC" % temperatura)
         display.display_line_1("Humidity = %3.2f%%" % umidade)
-        co2, tvoc = ccs.read_ccs()
+        try:
+            co2, tvoc = ccs.read_ccs()
+        except:
+            pass
         display.display_line_2(f'CO2: {co2} ppm ')
         display.display_line_3(f'TVOC: {tvoc} ppm')
         salva_banco(temperatura, umidade, co2, tvoc)
