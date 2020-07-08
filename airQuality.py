@@ -42,9 +42,9 @@ def constr():
 
 
 if __name__ == '__main__':
-    ccs = ReadCcs()
-    co2 = tvoc = 0
+    constr()
     hdc1080 = ReadHdc1080(offsetTemp=-3.5)
+    co2 = tvoc = 0
     while(1):
         temperatura = hdc1080.read_temp()
         umidade = hdc1080.read_humid()
