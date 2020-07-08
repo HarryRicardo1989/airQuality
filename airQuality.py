@@ -20,13 +20,13 @@ def should_update(last_update, rate):
     return False
 
 
-def salva_banco(TEMPERATURA, UMIDADE, CO2, TVOC):
+def salva_banco(TEMPERATURA, UMIDADE):
     global last_update
     if not should_update(last_update, 300):
         return
     DATA = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    insertdb.InsertDB(DATA, TEMPERATURA, UMIDADE, CO2, TVOC)
-    constr()
+    insertdb.InsertDB(DATA, TEMPERATURA, UMIDADE)
+    # constr()
     last_update = time()
 
 
@@ -37,30 +37,13 @@ def verifica_horario():
         display.liga_display()
 
 
-def constr():
-    global i
-    global ccs
-    if i < 3:
-        return
-    ccs = ReadCcs()
-    i = 0
-
-
 if __name__ == '__main__':
-    ccs = ReadCcs()
     hdc1080 = ReadHdc1080(offsetTemp=-3.5)
-    co2 = tvoc = 0
     while(1):
         temperatura = hdc1080.read_temp()
         umidade = hdc1080.read_humid()
         display.display_line_0("Temperature = %3.2fC" % temperatura)
         display.display_line_1("Humidity = %3.2f%%" % umidade)
-        try:
-            co2, tvoc = ccs.read_ccs()
-        except:
-            pass
-        display.display_line_2(f'CO2: {co2} ppm ')
-        display.display_line_3(f'TVOC: {tvoc} ppm')
-        salva_banco(temperatura, umidade, co2, tvoc)
+        salva_banco(temperatura, umidade)
         verifica_horario()
         sleep(0.3)
