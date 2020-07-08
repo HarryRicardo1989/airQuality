@@ -11,6 +11,7 @@ insertdb = InsertDB()
 ultima_atualizacao = 0,
 last_update = time()
 ccs = None
+i = 0
 
 
 def should_update(last_update, rate):
@@ -37,12 +38,16 @@ def verifica_horario():
 
 
 def constr():
+    global i
     global ccs
+    if i < 3:
+        return
     ccs = ReadCcs()
+    i = 0
 
 
 if __name__ == '__main__':
-    constr()
+    ccs = ReadCcs()
     hdc1080 = ReadHdc1080(offsetTemp=-3.5)
     co2 = tvoc = 0
     while(1):
