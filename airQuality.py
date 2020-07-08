@@ -23,6 +23,7 @@ def salva_banco(TEMPERATURA, UMIDADE, CO2, TVOC):
         return
     DATA = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     insertdb.InsertDB(DATA, TEMPERATURA, UMIDADE, CO2, TVOC)
+    print(f'UPDATED {dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
     last_update = time()
 
 
@@ -41,4 +42,4 @@ if __name__ == '__main__':
         display.display_line_3(f'TVOC: {tvoc} ppm')
         salva_banco(temperatura, umidade, co2, tvoc)
 
-        sleep(0.5)
+        sleep(0.3)
