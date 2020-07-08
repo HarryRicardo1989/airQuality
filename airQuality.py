@@ -27,6 +27,13 @@ def salva_banco(TEMPERATURA, UMIDADE, CO2, TVOC):
     last_update = time()
 
 
+def verifica_horario():
+    if dt.datetime.now().time() > dt.time(18, 0, 0):
+        display.desliga_display()
+    elif dt.datetime.now().time() > dt.time(8, 0, 0):
+        display.liga_display()
+
+
 if __name__ == '__main__':
 
     ccs = ReadCcs()
@@ -40,5 +47,5 @@ if __name__ == '__main__':
         display.display_line_2(f'CO2: {co2} ppm ')
         display.display_line_3(f'TVOC: {tvoc} ppm')
         salva_banco(temperatura, umidade, co2, tvoc)
-
+        verifica_horario()
         sleep(0.3)
