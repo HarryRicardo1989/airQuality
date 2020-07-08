@@ -8,7 +8,8 @@ from read_hdc1080 import ReadHdc1080
 display = CarregaDisplay(i2c_bus=1, address=0x27, numLinhas=4)
 insertdb = InsertDB()
 ultima_atualizacao = 0,
-last_update = time()
+last_update = constr_ccs = time()
+ccs = None
 
 
 def should_update(last_update, rate):
@@ -23,7 +24,7 @@ def salva_banco(TEMPERATURA, UMIDADE, CO2, TVOC):
         return
     DATA = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     insertdb.InsertDB(DATA, TEMPERATURA, UMIDADE, CO2, TVOC)
-    print(f'UPDATED {dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
+    constr()
     last_update = time()
 
 
@@ -34,11 +35,22 @@ def verifica_horario():
         display.liga_display()
 
 
-if __name__ == '__main__':
-    co2 = tvoc = 0
+def constr():
+    global constr_ccs
+    # if not should_update(constr_ccs, 240):
+    #    return
+    global ccs
+    print("restart")
     ccs = ReadCcs()
+    constr_ccs = time()
+
+
+if __name__ == '__main__':
+    ccs = ReadCcs()
+    co2 = tvoc = 0
     hdc1080 = ReadHdc1080(offsetTemp=-3.5)
     while(1):
+        # constr()
         temperatura = hdc1080.read_temp()
         umidade = hdc1080.read_humid()
         display.display_line_0("Temperature = %3.2fC" % temperatura)
