@@ -42,8 +42,8 @@ if __name__ == '__main__':
     while(1):
         temperatura = hdc1080.read_temp()
         umidade = hdc1080.read_humid()
-        display.display_line_0("Temperature = %3.2fC" % temperatura)
-        display.display_line_1("Humidity = %3.2f%%" % umidade)
+        display.display_line_0("Temperature: %3.2fC" % temperatura)
+        display.display_line_1("Humidity: %3.2f%%" % umidade)
         salva_banco(temperatura, umidade)
         verifica_horario()
         sleep(0.3)
