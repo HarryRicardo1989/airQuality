@@ -20,7 +20,10 @@ def salva_banco(TEMPERATURA, UMIDADE):
     if not should_update(last_update, 60):
         return
     DATA = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    insertdb.InsertDB(DATA, TEMPERATURA, UMIDADE)
+    try:
+        insertdb.InsertDB(DATA, TEMPERATURA, UMIDADE)
+    except:
+        pass
     last_update = time()
 
 
