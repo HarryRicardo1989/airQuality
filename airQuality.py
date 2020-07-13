@@ -28,8 +28,8 @@ def salva_banco(TEMPERATURA, UMIDADE):
 
 
 if __name__ == '__main__':
-    hdc1080 = ReadHdc1080(offsetTemp=-0.5)
     while(1):
+        hdc1080 = ReadHdc1080(offsetTemp=-0.5)
         temperatura = hdc1080.read_temp()
         umidade = hdc1080.read_humid()
         salva_banco(temperatura, umidade)
