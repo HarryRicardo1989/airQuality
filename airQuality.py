@@ -17,7 +17,7 @@ def should_update(last_update, rate):
 
 def salva_banco(TEMPERATURA, UMIDADE):
     global last_update
-    if not should_update(last_update, 60):
+    if not should_update(last_update, 30):
         return
     DATA = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     try:
@@ -28,7 +28,7 @@ def salva_banco(TEMPERATURA, UMIDADE):
 
 
 if __name__ == '__main__':
-    hdc1080 = ReadHdc1080(offsetTemp=-1.5)
+    hdc1080 = ReadHdc1080(offsetTemp=-0.5)
     while(1):
         temperatura = hdc1080.read_temp()
         umidade = hdc1080.read_humid()
