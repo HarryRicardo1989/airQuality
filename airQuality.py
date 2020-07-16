@@ -22,8 +22,9 @@ def salva_banco(TEMPERATURA, UMIDADE):
     DATA = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     try:
         insertdb.InsertDB(DATA, TEMPERATURA, UMIDADE)
-    except:
+    except e:
         pass
+        #print(e)
     last_update = time()
 
 
