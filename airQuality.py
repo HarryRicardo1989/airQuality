@@ -1,5 +1,6 @@
 #! /usr/bin/python3
 from time import sleep, time
+import os
 import datetime as dt
 from insertDb import InsertDB
 from read_hdc1080 import ReadHdc1080
@@ -20,11 +21,13 @@ def salva_banco(TEMPERATURA, UMIDADE):
     if not should_update(last_update, 30):
         return
     DATA = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    HOSTNAME = os.popen('hostname').read().replace("\n","").strip()
+    print(HOSTNAME)
     try:
-        insertdb.InsertDB(DATA, TEMPERATURA, UMIDADE)
+        insertdb.InsertDB(HOSTNAME, DATA, TEMPERATURA, UMIDADE)
     except e:
-        pass
-        #print(e)
+        #pass
+        print(e)
     last_update = time()
 
 
