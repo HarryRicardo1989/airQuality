@@ -38,14 +38,13 @@ if __name__ == '__main__':
     while(1):
         hdc1080 = ReadHdc1080(offsetTemp=0)
         barometer = BMP085(mode=3)
-
         temperatura = hdc1080.read_temp()
         umidade = hdc1080.read_humid()
         #temperatura2 = barometer.read_temperature()
-        pressure = barometer.read_pressure()
+        #pressure = barometer.read_pressure()
         altitude = barometer.read_altitude()
-        #sealevel_pressure = barometer.read_sealevel_pressure()
-        #print(umidade,temperatura,pressure,altitude,sealevel_pressure)
+        sealevel_pressure = barometer.read_sealevel_pressure()+7000
+        #print(pressure,sealevel_pressure)
 
-        salva_banco(temperatura, umidade, pressure, altitude)
+        salva_banco(temperatura, umidade, sealevel_pressure, altitude)
         sleep(0.3)
