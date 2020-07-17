@@ -13,6 +13,7 @@ insertdb = InsertDB()
 ultima_atualizacao = 0,
 db_update = compass_update = time()
 
+
 def should_update(last_update, rate):
     if(time() - last_update) > rate:
         return True
@@ -24,12 +25,12 @@ def salva_banco(TEMPERATURA, UMIDADE, PRESSURE, ALTITUDE):
     if not should_update(db_update, 30):
         return
     DATA = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    HOSTNAME = os.popen('hostname').read().replace("\n","").strip()
+    HOSTNAME = os.popen('hostname').read().replace("\n", "").strip()
     print(HOSTNAME)
-    #try:
+    # try:
     insertdb.InsertDB(HOSTNAME, DATA, TEMPERATURA, UMIDADE, PRESSURE, ALTITUDE)
-    #except:
-        #pass
+    # except:
+    # pass
     #    print('erro aqui')
     db_update = time()
 
@@ -43,8 +44,8 @@ if __name__ == '__main__':
         #temperatura2 = barometer.read_temperature()
         #pressure = barometer.read_pressure()
         altitude = barometer.read_altitude()
-        sealevel_pressure = barometer.read_sealevel_pressure()+7000
-        #print(pressure,sealevel_pressure)
+        sealevel_pressure = barometer.read_sealevel_pressure()
+        # print(pressure,sealevel_pressure)
 
         salva_banco(temperatura, umidade, sealevel_pressure, altitude)
         sleep(0.3)

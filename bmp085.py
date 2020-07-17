@@ -4,41 +4,43 @@ import time
 
 
 # BMP085 default address.
-BMP085_I2CADDR           = 0x77
+BMP085_I2CADDR = 0x77
 
 # Operating Modes
-BMP085_ULTRALOWPOWER     = 0
-BMP085_STANDARD          = 1
-BMP085_HIGHRES           = 2
-BMP085_ULTRAHIGHRES      = 3
+BMP085_ULTRALOWPOWER = 0
+BMP085_STANDARD = 1
+BMP085_HIGHRES = 2
+BMP085_ULTRAHIGHRES = 3
 
 # BMP085 Registers
-BMP085_CAL_AC1           = 0xAA  # R   Calibration data (16 bits)
-BMP085_CAL_AC2           = 0xAC  # R   Calibration data (16 bits)
-BMP085_CAL_AC3           = 0xAE  # R   Calibration data (16 bits)
-BMP085_CAL_AC4           = 0xB0  # R   Calibration data (16 bits)
-BMP085_CAL_AC5           = 0xB2  # R   Calibration data (16 bits)
-BMP085_CAL_AC6           = 0xB4  # R   Calibration data (16 bits)
-BMP085_CAL_B1            = 0xB6  # R   Calibration data (16 bits)
-BMP085_CAL_B2            = 0xB8  # R   Calibration data (16 bits)
-BMP085_CAL_MB            = 0xBA  # R   Calibration data (16 bits)
-BMP085_CAL_MC            = 0xBC  # R   Calibration data (16 bits)
-BMP085_CAL_MD            = 0xBE  # R   Calibration data (16 bits)
-BMP085_CONTROL           = 0xF4
-BMP085_TEMPDATA          = 0xF6
-BMP085_PRESSUREDATA      = 0xF6
+BMP085_CAL_AC1 = 0xAA  # R   Calibration data (16 bits)
+BMP085_CAL_AC2 = 0xAC  # R   Calibration data (16 bits)
+BMP085_CAL_AC3 = 0xAE  # R   Calibration data (16 bits)
+BMP085_CAL_AC4 = 0xB0  # R   Calibration data (16 bits)
+BMP085_CAL_AC5 = 0xB2  # R   Calibration data (16 bits)
+BMP085_CAL_AC6 = 0xB4  # R   Calibration data (16 bits)
+BMP085_CAL_B1 = 0xB6  # R   Calibration data (16 bits)
+BMP085_CAL_B2 = 0xB8  # R   Calibration data (16 bits)
+BMP085_CAL_MB = 0xBA  # R   Calibration data (16 bits)
+BMP085_CAL_MC = 0xBC  # R   Calibration data (16 bits)
+BMP085_CAL_MD = 0xBE  # R   Calibration data (16 bits)
+BMP085_CONTROL = 0xF4
+BMP085_TEMPDATA = 0xF6
+BMP085_PRESSUREDATA = 0xF6
 
 # Commands
-BMP085_READTEMPCMD       = 0x2E
-BMP085_READPRESSURECMD   = 0x34
+BMP085_READTEMPCMD = 0x2E
+BMP085_READPRESSURECMD = 0x34
 
 
 class BMP085(object):
-    def __init__(self, mode=BMP085_STANDARD, address=BMP085_I2CADDR, i2c=None, **kwargs):
+    def __init__(self, offset=7000, mode=BMP085_STANDARD, address=BMP085_I2CADDR, i2c=None, **kwargs):
         self._logger = logging.getLogger('Adafruit_BMP.BMP085')
         # Check that mode is valid.
         if mode not in [BMP085_ULTRALOWPOWER, BMP085_STANDARD, BMP085_HIGHRES, BMP085_ULTRAHIGHRES]:
-            raise ValueError('Unexpected mode value {0}.  Set mode to one of BMP085_ULTRALOWPOWER, BMP085_STANDARD, BMP085_HIGHRES, or BMP085_ULTRAHIGHRES'.format(mode))
+            raise ValueError(
+                'Unexpected mode value {0}.  Set mode to one of BMP085_ULTRALOWPOWER, BMP085_STANDARD, BMP085_HIGHRES, or BMP085_ULTRAHIGHRES'.format(mode))
+        self.offset = offset
         self._mode = mode
         # Create I2C device.
         if i2c is None:
@@ -97,7 +99,8 @@ class BMP085(object):
 
     def read_raw_pressure(self):
         """Reads the raw (uncompensated) pressure level from the sensor."""
-        self._device.write8(BMP085_CONTROL, BMP085_READPRESSURECMD + (self._mode << 6))
+        self._device.write8(
+            BMP085_CONTROL, BMP085_READPRESSURECMD + (self._mode << 6))
         if self._mode == BMP085_ULTRALOWPOWER:
             time.sleep(0.005)
         elif self._mode == BMP085_HIGHRES:
@@ -110,7 +113,8 @@ class BMP085(object):
         lsb = self._device.readU8(BMP085_PRESSUREDATA+1)
         xlsb = self._device.readU8(BMP085_PRESSUREDATA+2)
         raw = ((msb << 16) + (lsb << 8) + xlsb) >> (8 - self._mode)
-        self._logger.debug('Raw pressure 0x{0:04X} ({1})'.format(raw & 0xFFFF, raw))
+        self._logger.debug(
+            'Raw pressure 0x{0:04X} ({1})'.format(raw & 0xFFFF, raw))
         return raw
 
     def read_temperature(self):
@@ -161,7 +165,7 @@ class BMP085(object):
         X1 = (p >> 8) * (p >> 8)
         X1 = (X1 * 3038) >> 16
         X2 = (-7357 * p) >> 16
-        p = p + ((X1 + X2 + 3791) >> 4)
+        p = p + ((X1 + X2 + 3791) >> 4)+self.offset
         self._logger.debug('Pressure {0} Pa'.format(p))
         return p
 
