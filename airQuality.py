@@ -11,7 +11,7 @@ from read_hdc1080 import ReadHdc1080
 
 insertdb = InsertDB()
 ultima_atualizacao = 0,
-db_update = compass_update = barometer_update = time()
+db_update = compass_update = time()
 
 def should_update(last_update, rate):
     if(time() - last_update) > rate:
@@ -19,18 +19,18 @@ def should_update(last_update, rate):
     return False
 
 
-def salva_banco(TEMPERATURA, UMIDADE):
+def salva_banco(TEMPERATURA, UMIDADE, PRESSURE, ALTITUDE):
     global db_update
     if not should_update(db_update, 30):
         return
     DATA = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     HOSTNAME = os.popen('hostname').read().replace("\n","").strip()
     print(HOSTNAME)
-    try:
-        insertdb.InsertDB(HOSTNAME, DATA, TEMPERATURA, UMIDADE)
-    except e:
+    #try:
+    insertdb.InsertDB(HOSTNAME, DATA, TEMPERATURA, UMIDADE, PRESSURE, ALTITUDE)
+    #except:
         #pass
-        print(e)
+    #    print('erro aqui')
     db_update = time()
 
 
@@ -41,11 +41,11 @@ if __name__ == '__main__':
 
         temperatura = hdc1080.read_temp()
         umidade = hdc1080.read_humid()
-        temperatura2 = barometer.read_temperature()
+        #temperatura2 = barometer.read_temperature()
         pressure = barometer.read_pressure()
         altitude = barometer.read_altitude()
-        sealevel_pressure = barometer.read_sealevel_pressure()
-        print(umidade,temperatura,temperatura2,pressure,altitude,sealevel_pressure)
+        #sealevel_pressure = barometer.read_sealevel_pressure()
+        #print(umidade,temperatura,pressure,altitude,sealevel_pressure)
 
-        #salva_banco(temperatura, umidade)
+        salva_banco(temperatura, umidade, pressure, altitude)
         sleep(0.3)
