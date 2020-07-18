@@ -27,11 +27,8 @@ def salva_banco(TEMPERATURA, UMIDADE, PRESSURE, ALTITUDE):
     DATA = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     HOSTNAME = os.popen('hostname').read().replace("\n", "").strip()
     print(HOSTNAME)
-    # try:
     insertdb.InsertDB(HOSTNAME, DATA, TEMPERATURA, UMIDADE, PRESSURE, ALTITUDE)
-    # except:
-    # pass
-    #    print('erro aqui')
+
     db_update = time()
 
 
@@ -45,7 +42,7 @@ if __name__ == '__main__':
         #pressure = barometer.read_pressure()
         altitude = barometer.read_altitude()
         sealevel_pressure = barometer.read_sealevel_pressure()
-        # print(pressure,sealevel_pressure)
-
+        print(altitude)
         salva_banco(temperatura, umidade, sealevel_pressure, altitude)
+
         sleep(0.3)

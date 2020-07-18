@@ -165,14 +165,14 @@ class BMP085(object):
         X1 = (p >> 8) * (p >> 8)
         X1 = (X1 * 3038) >> 16
         X2 = (-7357 * p) >> 16
-        p = p + ((X1 + X2 + 3791) >> 4)+self.offset
+        p = p + ((X1 + X2 + 3791) >> 4) + self.offset
         self._logger.debug('Pressure {0} Pa'.format(p))
         return p
 
     def read_altitude(self, sealevel_pa=101325.0):
         """Calculates the altitude in meters."""
         # Calculation taken straight from section 3.6 of the datasheet.
-        pressure = float(self.read_pressure())
+        pressure = float(self.read_pressure()) - self.offset
         altitude = 44330.0 * (1.0 - pow(pressure / sealevel_pa, (1.0/5.255)))
         self._logger.debug('Altitude {0} m'.format(altitude))
         return altitude
