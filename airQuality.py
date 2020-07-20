@@ -27,7 +27,8 @@ def salva_banco(TEMPERATURA, UMIDADE, PRESSURE, ALTITUDE, SEALEVEL_PRESSURE):
     DATA = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     HOSTNAME = os.popen('hostname').read().replace("\n", "").strip()
     print(HOSTNAME)
-    insertdb.InsertDB(HOSTNAME, DATA, TEMPERATURA, UMIDADE, PRESSURE, ALTITUDE)
+    insertdb.InsertDB(HOSTNAME, DATA, TEMPERATURA, UMIDADE,
+                      PRESSURE, ALTITUDE, SEALEVEL_PRESSURE)
 
     db_update = time()
 
