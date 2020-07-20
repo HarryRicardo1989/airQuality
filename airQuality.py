@@ -22,7 +22,7 @@ def should_update(last_update, rate):
 
 def salva_banco(TEMPERATURA, UMIDADE, PRESSURE, ALTITUDE):
     global db_update
-    if not should_update(db_update, 30):
+    if not should_update(db_update, 2):
         return
     DATA = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     HOSTNAME = os.popen('hostname').read().replace("\n", "").strip()
@@ -38,11 +38,11 @@ if __name__ == '__main__':
         barometer = BMP085(mode=3)
         temperatura = hdc1080.read_temp()
         umidade = hdc1080.read_humid()
-        #temperatura2 = barometer.read_temperature()
+        temperatura2 = barometer.read_temperature()
         pressure = barometer.read_pressure()
         altitude = barometer.read_altitude()
-        sealevel_pressure = barometer.read_sealevel_pressure()
-        #print(altitude, pressure, sealevel_pressure)
+        sealevel_pressure = barometer.read_sealevel_pressure(altitude)
+        #print(altitude, pressure, sealevel_pressure, temperatura2)
         salva_banco(temperatura, umidade, sealevel_pressure, altitude)
 
         sleep(0.3)

@@ -1,10 +1,9 @@
-#! /usr/bin/python3
-from time import sleep, time
-import os
-import datetime as dt
-from bmp085 import BMP085
+import math
 
+sealevel_pa = 1013.25
+pressure = 947
+T = 29.36
 
-barometer = BMP085(mode=3)
+h1 = (10*(-28.93*(1*(T+273))*(math.log(pressure/sealevel_pa))))/10
 
-barometer.read_pressure()
+print(h1)
