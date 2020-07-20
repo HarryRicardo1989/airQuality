@@ -20,7 +20,7 @@ def should_update(last_update, rate):
     return False
 
 
-def salva_banco(TEMPERATURA, UMIDADE, PRESSURE, ALTITUDE):
+def salva_banco(TEMPERATURA, UMIDADE, PRESSURE, ALTITUDE, SEALEVEL_PRESSURE):
     global db_update
     if not should_update(db_update, 30):
         return
@@ -43,6 +43,7 @@ if __name__ == '__main__':
         altitude = barometer.read_altitude()
         sealevel_pressure = barometer.read_sealevel_pressure(altitude)
         #print(altitude, pressure, sealevel_pressure, temperatura2)
-        salva_banco(temperatura, umidade, sealevel_pressure, altitude)
+        salva_banco(temperatura, umidade, pressure,
+                    altitude, sealevel_pressure)
 
         sleep(0.3)
