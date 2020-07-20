@@ -39,10 +39,10 @@ if __name__ == '__main__':
         temperatura = hdc1080.read_temp()
         umidade = hdc1080.read_humid()
         #temperatura2 = barometer.read_temperature()
-        #pressure = barometer.read_pressure()
+        pressure = barometer.read_pressure()
         altitude = barometer.read_altitude()
         sealevel_pressure = barometer.read_sealevel_pressure()
-        print(altitude)
-        salva_banco(temperatura, umidade, sealevel_pressure, altitude)
+        print(altitude, pressure, sealevel_pressure)
+        #salva_banco(temperatura, umidade, sealevel_pressure, altitude)
 
         sleep(0.3)
