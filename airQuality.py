@@ -42,7 +42,7 @@ if __name__ == '__main__':
         temperatura2 = barometer.read_temperature()
         pressure = barometer.read_pressure()
         altitude = barometer.read_altitude()
-        sealevel_pressure = barometer.read_sealevel_pressure(altitude)
+        sealevel_pressure = barometer.read_sealevel_pressure(565)
         #print(altitude, pressure, sealevel_pressure, temperatura2)
         salva_banco(temperatura, umidade, pressure,
                     altitude, sealevel_pressure)
