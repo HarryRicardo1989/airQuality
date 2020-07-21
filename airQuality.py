@@ -39,7 +39,7 @@ if __name__ == '__main__':
         barometer = BMP085(mode=3)
         temperatura = hdc1080.read_temp()
         umidade = hdc1080.read_humid()
-        temperatura2 = barometer.read_temperature()
+        #temperatura2 = barometer.read_temperature()
         pressure = barometer.read_pressure()
         altitude = barometer.read_altitude()
         sealevel_pressure = barometer.read_sealevel_pressure(565)
