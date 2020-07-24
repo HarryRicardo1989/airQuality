@@ -22,7 +22,7 @@ def should_update(last_update, rate):
 
 def salva_banco(TEMPERATURA, UMIDADE, PRESSURE, ALTITUDE, SEALEVEL_PRESSURE):
     global db_update
-    if not should_update(db_update, 10):
+    if not should_update(db_update, 30):
         return
     DATA = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     HOSTNAME = os.popen('hostname').read().replace("\n", "").strip()
