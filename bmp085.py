@@ -35,7 +35,7 @@ BMP085_READPRESSURECMD = 0x34
 
 
 class BMP085(object):
-    def __init__(self, offset=-200, mode=BMP085_STANDARD, address=BMP085_I2CADDR, i2c=None, **kwargs):
+    def __init__(self, offset=0, mode=BMP085_STANDARD, address=BMP085_I2CADDR, i2c=None, **kwargs):
         self._logger = logging.getLogger('Adafruit_BMP.BMP085')
         # Check that mode is valid.
         if mode not in [BMP085_ULTRALOWPOWER, BMP085_STANDARD, BMP085_HIGHRES, BMP085_ULTRAHIGHRES]:
@@ -172,7 +172,7 @@ class BMP085(object):
 
     def read_altitude(self, sealevel_pa=101325.0):
         """Calculates the altitude in meters."""
-        altitude = (10*(-28.93*(1*(self.read_temperature()+273))
+        altitude = (10*(-27.93*(1*(self.read_temperature()+273))
                         * (math.log(self.read_pressure()/sealevel_pa))))/10
         self._logger.debug('Altitude {0} m'.format(altitude))
         return altitude
