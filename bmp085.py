@@ -5,7 +5,7 @@ import math
 
 
 # BMP085 default address.
-BMP085_I2CADDR = 0x76
+BMP085_I2CADDR = 0x77
 
 # Operating Modes
 BMP085_ULTRALOWPOWER = 0
@@ -96,6 +96,7 @@ class BMP085(object):
         time.sleep(0.005)  # Wait 5ms
         raw = self._device.readU16BE(BMP085_TEMPDATA)
         self._logger.debug('Raw temp 0x{0:X} ({1})'.format(raw & 0xFFFF, raw))
+        print(raw)
         return raw
 
     def read_raw_pressure(self):
@@ -184,3 +185,6 @@ class BMP085(object):
         p0 = pressure / pow(1.0 - altitude_m/44330.0, 5.255)
         self._logger.debug('Sealevel pressure {0} Pa'.format(p0))
         return p0
+
+
+print(BMP085().read_temperature())

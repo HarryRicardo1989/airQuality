@@ -1,14 +1,17 @@
 #! /usr/bin/python3
-import datetime as dt
-#from bmp085 import BMP085
-import os
-from bme280 import *
-from insertDb import InsertDB
 from time import sleep, time
+import os
+import datetime as dt
+from bmp085 import BMP085
+#from l3g4200d import L3G4200D
+#from hmc5883l import HMC5883l
+#from adx1345 import ADXL345
+from insertDb import InsertDB
+from read_hdc1080 import ReadHdc1080
 
 insertdb = InsertDB()
-ultima_atualizacao = 0
-db_update = time()
+ultima_atualizacao = 0,
+db_update = compass_update = time()
 
 
 def should_update(last_update, rate):
@@ -17,7 +20,7 @@ def should_update(last_update, rate):
     return False
 
 
-def salva_banco(TEMPERATURA, UMIDADE, PRESSURE, ALTITUDE, SEALEVEL_PRESSURE, DEW_POINT):
+def salva_banco(TEMPERATURA, UMIDADE, PRESSURE, ALTITUDE, SEALEVEL_PRESSURE):
     global db_update
     if not should_update(db_update, 30):
         return
@@ -25,24 +28,23 @@ def salva_banco(TEMPERATURA, UMIDADE, PRESSURE, ALTITUDE, SEALEVEL_PRESSURE, DEW
     HOSTNAME = os.popen('hostname').read().replace("\n", "").strip()
     print(HOSTNAME)
     insertdb.InsertDB(HOSTNAME, DATA, TEMPERATURA, UMIDADE,
-                      PRESSURE, ALTITUDE, SEALEVEL_PRESSURE, DEW_POINT)
+                      PRESSURE, ALTITUDE, SEALEVEL_PRESSURE)
+
     db_update = time()
 
 
 if __name__ == '__main__':
     while(1):
-        barometer = BME280(t_mode=BME280_OSAMPLE_8,
-                           p_mode=BME280_OSAMPLE_8, h_mode=BME280_OSAMPLE_8)
-        temperatura = barometer.read_temperature()
-        umidade = barometer.read_humidity()
+        hdc1080 = ReadHdc1080(offsetTemp=0)
+        barometer = BMP085(mode=3)
+        temperatura = hdc1080.read_temp()
+        umidade = hdc1080.read_humid()
         #temperatura2 = barometer.read_temperature()
         pressure = barometer.read_pressure()
         altitude = barometer.read_altitude()
         sealevel_pressure = barometer.read_sealevel_pressure(545)
-        dew_point = barometer.read_dewpoint()
-
-        #print(altitude, pressure, sealevel_pressure, temperatura, umidade)
+        #print(altitude, pressure, sealevel_pressure)
         salva_banco(temperatura, umidade, pressure,
-                    altitude, sealevel_pressure, dew_point)
+                    altitude, sealevel_pressure)
 
         sleep(0.3)
