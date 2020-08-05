@@ -18,7 +18,7 @@ def should_update(last_update, rate):
 
 def salva_banco(temperatura_ar=0, temperatura_orvalho=0, umidade=0, pressao_local=0, pressao_nivel_mar=0, altitude=0, uva=0, uvb=0, wind_speed=0, wind_direction=0, pluviometro=0, co2=0, tvoc=0, relampago=0):
     global db_update
-    if not should_update(db_update, 3):
+    if not should_update(db_update, 20):
         return
     data_hora = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     hostname = os.popen('hostname').read().replace("\n", "").strip()

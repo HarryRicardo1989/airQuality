@@ -5,6 +5,11 @@ import math
 # BME280 default address.
 BME280_I2CADDR = 0x76
 
+# BME280 default offsets.
+OFFSET_PRESSURE = -200
+OFFSET_TEMPERATURE = 0
+OFFSET_HUMID = 0
+
 # Operating Modes
 BME280_OSAMPLE_1 = 1
 BME280_OSAMPLE_2 = 2
@@ -65,9 +70,12 @@ BME280_REGISTER_DATA = 0xF7
 
 
 class BME280(object):
-    def __init__(self, t_mode=BME280_OSAMPLE_1, p_mode=BME280_OSAMPLE_1, h_mode=BME280_OSAMPLE_1,
-                 standby=BME280_STANDBY_250, filter=BME280_FILTER_off, address=BME280_I2CADDR, i2c=None,
+    def __init__(self, offset_P=OFFSET_PRESSURE, offset_H=OFFSET_HUMID, offset_T=OFFSET_TEMPERATURE, t_mode=BME280_OSAMPLE_16, p_mode=BME280_OSAMPLE_16, h_mode=BME280_OSAMPLE_16,
+                 standby=BME280_STANDBY_500, filter=BME280_FILTER_16, address=BME280_I2CADDR, i2c=None,
                  **kwargs):
+        self.offset_P = offset_P
+        self.offset_H = offset_H
+        self.offset_T = offset_T
         self._logger = logging.getLogger('Adafruit_BMP.BMP085')
         # Check that t_mode is valid.
         if t_mode not in [BME280_OSAMPLE_1, BME280_OSAMPLE_2, BME280_OSAMPLE_4,
@@ -200,7 +208,7 @@ class BME280(object):
             UT / 131072.0 - float(self.dig_T1) / 8192.0)) * float(self.dig_T3)
         self.t_fine = int(var1 + var2)
         temp = (var1 + var2) / 5120.0
-        return temp
+        return temp + self.offset_T
 
     def read_pressure(self):
         """Gets the compensated pressure in Pascals."""
@@ -219,7 +227,7 @@ class BME280(object):
         var1 = float(self.dig_P9) * p * p / 2147483648.0
         var2 = p * float(self.dig_P8) / 32768.0
         p = p + (var1 + var2 + float(self.dig_P7)) / 16.0
-        return p
+        return p+self.offset_P
 
     def read_humidity(self):
         adc = float(self.read_raw_humidity())
@@ -233,7 +241,7 @@ class BME280(object):
             h = 100
         elif h < 0:
             h = 0
-        return h
+        return h + self.offset_H
 
     def read_temperature_f(self):
         # Wrapper to get temp in F
