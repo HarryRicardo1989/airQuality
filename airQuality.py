@@ -36,7 +36,7 @@ if __name__ == '__main__':
         #temperatura2 = barometer.read_temperature()
         pressao_local = barometer.read_pressure()
         altitude = barometer.read_altitude()
-        pressao_nivel_mar = barometer.read_sealevel_pressure(545)
+        pressao_nivel_mar = barometer.read_sealevel_pressure(543)
         temperatura_orvalho = barometer.read_dewpoint()
 
         #print(altitude, pressure, sealevel_pressure, temperatura, umidade)
