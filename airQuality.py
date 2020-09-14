@@ -12,7 +12,7 @@ read_ccs811 = ReadCcs()
 uart = serial.Serial('/dev/ttyS0', 115200)
 post_db = POSTDB()
 ultima_atualizacao = 0
-db_update = timer_wind_speed = timerccs811 = time()
+db_update = timer_wind_speed = timerccs811 = timer_reset = time()
 media_vel = 0
 media_tvoc = 0
 media_co2 = 0
@@ -47,7 +47,7 @@ def wind_speed():
 
     try:
         raw_value = int(uart.readline().decode())
-        velocidade = (raw_value * math.pi * 0.09)
+        velocidade = (raw_value * math.pi * 0.09)/2
         media_vel += 1/n*(velocidade-media_vel)
         n += 1
     except Exception as ex:
@@ -56,9 +56,19 @@ def wind_speed():
 
     if n > 20:
         n = 1
+    timer_wind_speed = time()
+
+
+def reset():
+    global timer_reset
+    if not should_update(timer_wind_speed, 21600):
+        return
+    read_ccs811.SWReset()
+    timer_reset = time()
 
 
 def ccs811():
+    reset()
     global timerccs811
     global media_tvoc
     global media_co2
@@ -79,6 +89,7 @@ def ccs811():
 
     if n2 > 20:
         n2 = 1
+    timerccs811 = time()
 
 
 if __name__ == '__main__':

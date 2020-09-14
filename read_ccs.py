@@ -11,6 +11,9 @@ class ReadCcs:
         while not self.__ccs.available():
             pass
 
+    def SWReset():
+        self.__ccs.SWReset()
+
     def read_ccs(self):
         try:
             if self.__ccs.available():
