@@ -26,14 +26,14 @@ def should_update(last_update, rate):
     return False
 
 
-def salva_banco(temperatura_ar=0, temperatura_orvalho=0, umidade=0, pressao_local=0, pressao_nivel_mar=0, altitude=0, uva=0, uvb=0, wind_speed=0, wind_direction=0, pluviometro=0, co2=0, tvoc=0, relampago=0):
+def salva_banco(temperatura_ar=0, temperatura_orvalho=0, umidade=0, pressao_local=0, pressao_nivel_mar=0, altitude=0, uva=0, uvb=0, wind_speed=0, wind_direction=0, pluviometro=0, chuva_status=0, co2=0, tvoc=0, relampago=0):
     global db_update
     if not should_update(db_update, 20):
         return
     data_hora = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     hostname = os.popen('hostname').read().replace("\n", "").strip()
     post_db.post_DB(hostname=hostname, data_hora=data_hora, temperatura_ar=temperatura_ar, temperatura_orvalho=temperatura_orvalho, umidade=umidade, pressao_local=pressao_local,
-                    pressao_nivel_mar=pressao_nivel_mar, altitude=altitude, uva=uva, uvb=uvb, wind_speed=wind_speed, wind_direction=wind_direction, pluviometro=pluviometro, co2=co2, tvoc=tvoc, relampago=relampago)
+                    pressao_nivel_mar=pressao_nivel_mar, altitude=altitude, uva=uva, uvb=uvb, wind_speed=wind_speed, wind_direction=wind_direction, pluviometro=pluviometro, chuva_status=chuva_status, co2=co2, tvoc=tvoc, relampago=relampago)
     db_update = time()
 
 

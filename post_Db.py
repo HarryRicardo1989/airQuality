@@ -4,9 +4,9 @@ import json
 
 class POSTDB:
     def __init__(self):
-        self.url_tx = 'http://10.8.0.150:9000/api/insert'
+        self.url_tx = 'http://10.8.0.1:9000/api/insert'
 
-    def post_DB(self, hostname, data_hora, temperatura_ar=0, temperatura_orvalho=0, umidade=0, pressao_local=0, pressao_nivel_mar=0, altitude=0, uva=0, uvb=0, wind_speed=0, wind_direction=0, pluviometro=0, co2=0, tvoc=0, relampago=0):
+    def post_DB(self, hostname, data_hora, temperatura_ar=0, temperatura_orvalho=0, umidade=0, pressao_local=0, pressao_nivel_mar=0, altitude=0, uva=0, uvb=0, wind_speed=0, wind_direction=0, pluviometro=0, chuva_status=0, co2=0, tvoc=0, relampago=0):
         json_to_tx = {
             "hostname": hostname,
             "data_hora": data_hora,
@@ -21,6 +21,7 @@ class POSTDB:
             "wind_speed": wind_speed,
             "wind_direction": wind_direction,
             "pluviometro": pluviometro,
+            "chuva_status": chuva_status,
             "co2": co2,
             "tvoc": tvoc,
             "relampago": relampago,
