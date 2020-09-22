@@ -106,9 +106,9 @@ if __name__ == '__main__':
         temperatura_orvalho = barometer.read_dewpoint()
         wind_speed()
         ccs811()
-
+        chuva_status = 0
         #print(altitude, pressure, sealevel_pressure, temperatura, umidade)
         salva_banco(temperatura_ar=temperatura_ar, temperatura_orvalho=temperatura_orvalho, umidade=umidade,
-                    pressao_local=pressao_local, pressao_nivel_mar=pressao_nivel_mar, altitude=altitude, wind_speed=media_vel, co2=media_co2, tvoc=media_tvoc)
+                    pressao_local=pressao_local, pressao_nivel_mar=pressao_nivel_mar, altitude=altitude, wind_speed=media_vel, chuva_status=chuva_status, co2=media_co2, tvoc=media_tvoc)
 
         sleep(0.2)
