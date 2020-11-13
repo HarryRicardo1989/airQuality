@@ -48,7 +48,7 @@ def wind_speed():
     try:
         raw_value = int(uart.readline().decode())
         velocidade = (raw_value * math.pi * 0.09)/2
-        media_vel += 1/n*(velocidade-media_vel)
+        media_vel = velocidade  # += 1/n*(velocidade-media_vel)
         n += 1
     except Exception as ex:
         print(ex)
