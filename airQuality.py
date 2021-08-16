@@ -8,6 +8,9 @@ from bme280 import *
 from post_Db import POSTDB
 from time import sleep, time
 
+offset_temp = -4.0
+offset_humid = -2.0
+
 read_ccs811 = ReadCcs()
 uart = serial.Serial('/dev/ttyS0', 115200)
 post_db = POSTDB()
@@ -47,7 +50,7 @@ def wind_speed():
 
     try:
         raw_value = int(uart.readline().decode())
-        velocidade = (raw_value * math.pi * 0.09)/2
+        velocidade = (raw_value * math.pi * 0.095)/2
         media_vel = velocidade  # += 1/n*(velocidade-media_vel)
         n += 1
     except Exception as ex:
@@ -97,8 +100,8 @@ if __name__ == '__main__':
     while(1):
         barometer = BME280(t_mode=BME280_OSAMPLE_8,
                            p_mode=BME280_OSAMPLE_8, h_mode=BME280_OSAMPLE_8)
-        temperatura_ar = barometer.read_temperature()
-        umidade = barometer.read_humidity()
+        temperatura_ar = barometer.read_temperature() + offset_temp
+        umidade = barometer.read_humidity() + offset_humid
         #temperatura2 = barometer.read_temperature()
         pressao_local = barometer.read_pressure()
         altitude = barometer.read_altitude()
